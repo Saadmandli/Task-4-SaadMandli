@@ -19,19 +19,22 @@
 ## 📸 Screenshots
 
 ### Landing — Choose Your Path
-![Landing screen showing path selection between OCR and Object Detection](proj_4.png)
+![Landing screen showing path selection between OCR and Object Detection](<img width="959" height="461" alt="proj 4" src="https://github.com/user-attachments/assets/299f0543-b335-4684-97c5-f5e904e0eb86" />
+)
 > Choose between **Path 1: OCR — Text Recognition** and **Path 2: Object Detection**, then upload any image to begin.
 
 ---
 
 ### Path 1 — OCR Text Recognition in Action
-![OCR path showing a portrait photo being processed with grayscale, blur, and threshold pipeline stages](proje4.png)
+![OCR path showing a portrait photo being processed with grayscale, blur, and threshold pipeline stages](<img width="948" height="469" alt="proje4" src="https://github.com/user-attachments/assets/fd49936e-5fb1-45e7-8b38-94a45d8b80a4" />
+)
 > Upload any image and watch it flow through **Grayscale → Gaussian Blur → Otsu Threshold → AI OCR**. Live canvas previews update in real time as you adjust the PSM mode, confidence threshold, and blur kernel.
 
 ---
 
 ### Path 2 — Object Detection in Action
-![Object detection path showing a map image with preprocessing stages and MobileNet-SSD bounding box parameters](Project_4-1.png)
+![Object detection path showing a map image with preprocessing stages and MobileNet-SSD bounding box parameters](<img width="944" height="475" alt="Project 4-1" src="https://github.com/user-attachments/assets/895e1950-fab2-4552-8616-21ce5419f080" />
+)
 > Switch to Object Detection mode to identify and localize objects. Tune confidence gate, blob size (224×224 or 300×300), and NMS threshold before firing the pipeline.
 
 ---
