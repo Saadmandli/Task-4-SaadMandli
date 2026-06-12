@@ -27,7 +27,8 @@
 ---
 
 ### Path 1 — OCR Text Recognition in Action
-![OCR path showing a portrait photo being processed with grayscale, blur, and threshold pipeline stages](<img width="948" height="469" alt="proje4" src="https://github.com/user-attachments/assets/fd49936e-5fb1-45e7-8b38-94a45d8b80a4" />
+![OCR path showing a portrait photo being processed with grayscale, blur, and threshold pipeline stages](<img width="948" height="469" alt="proje4" src="https://github.com/user-attachments/assets/9566ca23-8e5a-4990-8a40-611b810f243f" />
+
 )
 > Upload any image and watch it flow through **Grayscale → Gaussian Blur → Otsu Threshold → AI OCR**. Live canvas previews update in real time as you adjust the PSM mode, confidence threshold, and blur kernel.
 
