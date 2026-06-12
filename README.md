@@ -19,7 +19,8 @@
 ## 📸 Screenshots
 
 ### Landing — Choose Your Path
-![Landing screen showing path selection between OCR and Object Detection](<img width="959" height="461" alt="proj 4" src="https://github.com/user-attachments/assets/299f0543-b335-4684-97c5-f5e904e0eb86" />
+![Landing screen showing path selection between OCR and Object Detection](<img width="959" height="461" alt="proj 4" src="https://github.com/user-attachments/assets/9310633e-5d2a-4a62-8485-7ee22e44c060" />
+
 )
 > Choose between **Path 1: OCR — Text Recognition** and **Path 2: Object Detection**, then upload any image to begin.
 
