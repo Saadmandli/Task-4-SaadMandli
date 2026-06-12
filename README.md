@@ -35,7 +35,8 @@
 ---
 
 ### Path 2 — Object Detection in Action
-![Object detection path showing a map image with preprocessing stages and MobileNet-SSD bounding box parameters](<img width="944" height="475" alt="Project 4-1" src="https://github.com/user-attachments/assets/895e1950-fab2-4552-8616-21ce5419f080" />
+![Object detection path showing a map image with preprocessing stages and MobileNet-SSD bounding box parameters](<img width="944" height="475" alt="Project 4-1" src="https://github.com/user-attachments/assets/36fb7207-52b6-4232-aa12-4909083c3bd1" />
+
 )
 > Switch to Object Detection mode to identify and localize objects. Tune confidence gate, blob size (224×224 or 300×300), and NMS threshold before firing the pipeline.
 
