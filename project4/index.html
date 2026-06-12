@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project 4 — DecodeLabs AI Recognition Pipeline</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="header">
+    <div class="logo"><span>Saad Mandli</span> // AI Engineer</div>
+    <div style="flex:1"></div>
+    <div class="badge">PROJECT 4 — IMAGE &amp; TEXT RECOGNITION</div>
+  </div>
+
+  <!-- ═══ MAIN ═══ -->
+  <div class="main">
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>Building the Machine's <b>Optic Nerve</b></h1>
+      <p>
+        A fully functioning recognition pipeline. Choose your execution path: OCR (text extraction)
+        or Object Detection. Upload any image and watch the pipeline process it through grayscale
+        conversion, adaptive thresholding, and AI-powered inference.
+      </p>
+    </div>
+
+    <!-- Path Tabs -->
+    <div class="path-tabs">
+      <div class="tab active" id="tab-ocr" onclick="switchPath('ocr')">
+        <div class="tab-label">PATH 1</div>
+        <div class="tab-title">OCR — Text Recognition</div>
+        <div class="tab-desc">pytesseract / vision model → text strings</div>
+      </div>
+      <div class="tab" id="tab-obj" onclick="switchPath('obj')">
+        <div class="tab-label">PATH 2</div>
+        <div class="tab-title">Object Detection</div>
+        <div class="tab-desc">cv2.dnn / MobileNet-SSD → bounding boxes</div>
+      </div>
+    </div>
+
+    <!-- Pipeline Visualizer -->
+    <div class="pipeline-viz" id="pipeline-viz">
+      <div class="pipe-node active-node"><span>INPUT</span><b>Raw Image</b></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node" id="pn-gray"><span>STEP 1</span><b>Grayscale</b></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node" id="pn-blur"><span>STEP 2</span><b>Blur</b></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node" id="pn-thresh"><span>STEP 3</span><b>Threshold</b></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node" id="pn-infer"><span>STEP 4</span><b id="pn-infer-label">OCR</b></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-node" id="pn-out"><span>OUTPUT</span><b>Result</b></div>
+    </div>
+
+    <!-- Upload Section -->
+    <div id="upload-section">
+      <div class="upload-zone" id="drop-zone">
+        <input type="file" id="file-input" accept="image/*" onchange="handleFile(this.files[0])" />
+        <div class="upload-icon">⊞</div>
+        <h3>Drop an image here or click to upload</h3>
+        <p>Supports JPG, PNG, GIF, WebP — any image with text or objects</p>
+      </div>
+    </div>
+
+    <!-- Main Panel (shown after upload) -->
+    <div id="main-panel" style="display:none">
+
+      <!-- Preview + Controls -->
+      <div class="preview-area">
+        <div class="preview-img-wrap" id="img-wrap">
+          <img id="preview-img" src="" alt="preview" />
+          <canvas id="bbox-canvas" class="canvas-overlay"></canvas>
+        </div>
+
+        <div class="controls">
+          <div class="section-title">Parameters</div>
+
+          <!-- OCR Params -->
+          <div id="ocr-params">
+            <div class="param-row">
+              <span class="param-label">PSM Mode</span>
+              <select id="psm-select">
+                <option value="3">PSM 3 — Auto (varied layouts)</option>
+                <option value="6">PSM 6 — Uniform block</option>
+                <option value="7">PSM 7 — Single line</option>
+                <option value="11" selected>PSM 11 — Sparse text</option>
+              </select>
+            </div>
+            <div class="param-row">
+              <span class="param-label">Confidence min</span>
+              <input type="range" id="conf-slider" min="0" max="100" value="80" />
+              <span class="param-val" id="conf-val">80%</span>
+            </div>
+            <div class="param-row">
+              <span class="param-label">Blur kernel</span>
+              <input type="range" id="blur-slider" min="1" max="9" value="3" step="2" />
+              <span class="param-val" id="blur-val">3×3</span>
+            </div>
+          </div>
+
+          <!-- Object Detection Params -->
+          <div id="obj-params" style="display:none">
+            <div class="param-row">
+              <span class="param-label">Confidence gate</span>
+              <input type="range" id="obj-conf-slider" min="50" max="99" value="80" />
+              <span class="param-val" id="obj-conf-val">80%</span>
+            </div>
+            <div class="param-row">
+              <span class="param-label">Blob size</span>
+              <select id="blob-size">
+                <option value="300" selected>300×300 (MobileNet-SSD)</option>
+                <option value="224">224×224 (MobileNet)</option>
+              </select>
+            </div>
+            <div class="param-row">
+              <span class="param-label">NMS threshold</span>
+              <input type="range" id="nms-slider" min="10" max="80" value="40" />
+              <span class="param-val" id="nms-val">0.40</span>
+            </div>
+          </div>
+
+          <button class="run-btn" id="run-btn" onclick="runPipeline()">▶ EXECUTE_PIPELINE</button>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div class="info-chip" id="chip-size">—</div>
+            <div class="info-chip" id="chip-dims">—</div>
+            <div class="info-chip" id="chip-mode">PATH 1: OCR</div>
+          </div>
+
+          <div style="margin-top:12px">
+            <button class="reset-btn" onclick="resetAll()">↩ Upload new image</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pre-processing strip -->
+      <div class="preproc-strip" id="preproc-strip" style="display:none">
+        <div class="preproc-frame">
+          <canvas id="c-orig" width="100" height="80"></canvas>
+          <span>ORIGINAL</span>
+        </div>
+        <div class="preproc-frame">
+          <canvas id="c-gray" width="100" height="80"></canvas>
+          <span>GRAYSCALE</span>
+        </div>
+        <div class="preproc-frame">
+          <canvas id="c-blur" width="100" height="80"></canvas>
+          <span>GAUSSIAN BLUR</span>
+        </div>
+        <div class="preproc-frame">
+          <canvas id="c-thresh" width="100" height="80"></canvas>
+          <span>THRESHOLD</span>
+        </div>
+      </div>
+
+      <!-- Steps Panel -->
+      <div class="steps-panel" id="steps-panel" style="display:none">
+        <div class="step-row">
+          <div class="step-num" id="s1-num">01</div>
+          <div class="step-info">
+            <b>Grayscale Conversion</b>
+            <p>Collapsing the 3D RGB matrix into a 1D intensity matrix. Removes distracting color data.</p>
+          </div>
+          <div class="step-status status-pending" id="s1-status">PENDING</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num" id="s2-num">02</div>
+          <div class="step-info">
+            <b>Gaussian Blur</b>
+            <p>Smoothing the image to eliminate micro-imperfections and artifact noise (kernel: <span id="s2-kernel">3×3</span>).</p>
+          </div>
+          <div class="step-status status-pending" id="s2-status">PENDING</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num" id="s3-num">03</div>
+          <div class="step-info">
+            <b>Adaptive Thresholding (Otsu's Method)</b>
+            <p>Forcing every pixel to choose a side. Converting grayscale into pure binary black-and-white.</p>
+          </div>
+          <div class="step-status status-pending" id="s3-status">PENDING</div>
+        </div>
+        <div class="step-row">
+          <div class="step-num" id="s4-num">04</div>
+          <div class="step-info" id="s4-info">
+            <b>OCR Inference (pytesseract)</b>
+            <p>Running the convolutional + bi-directional LSTM pipeline to extract text sequences.</p>
+          </div>
+          <div class="step-status status-pending" id="s4-status">PENDING</div>
+        </div>
+      </div>
+
+      <!-- Error Zone -->
+      <div id="error-zone"></div>
+
+      <!-- Result Zone -->
+      <div id="result-zone" style="display:none"></div>
+
+    </div><!-- /main-panel -->
+
+  </div><!-- /main -->
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
